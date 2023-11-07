@@ -3,7 +3,7 @@ name: CICD for Laravel and React
 on:
   push:
     branches:
-      - dev-env
+      - main
 
 jobs:
   run-frontend-on-ec2:
