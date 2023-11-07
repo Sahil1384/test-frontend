@@ -25,6 +25,7 @@ jobs:
         cache: 'npm'
 
     - name: Install Dependencies
+      working-directory: /home/ubuntu/test-frontend/Frontend
       run: npm install
 
     - name: Build Application
@@ -39,5 +40,4 @@ jobs:
         ssh -i /path/to/your/key.pem ec2-user@your-ec2-ip "cd /path/to/destination && pm2 restart app"
 
     - name: Clean Up
-    
       run: npm ci
