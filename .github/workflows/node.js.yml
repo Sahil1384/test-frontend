@@ -30,13 +30,9 @@ jobs:
           chmod 600 my-ssh-key.pem
           ssh -o StrictHostKeyChecking=no -i my-ssh-key.pem ${{ secrets.USER_NAME }}@${HOSTNAME} '
               cd /home/ubuntu/ &&
-              rm -rf test-frontend &&
               git clone https://github.com/Sahil1384/test-frontend.git &&
               cd /home/ubuntu/test-frontend &&
               npm install &&
-              npm install -g pm2 &&
               npm run build &&
-              pm2 start npm -- start &&
-              pm2 save
+              npm run start
               '
-
