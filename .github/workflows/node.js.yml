@@ -24,12 +24,11 @@ jobs:
 
       - name: SSH to instance
         env:
-            PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-            HOSTNAME: ${{secrets.SSH_HOST}}
-            USER_NAME: ${{secrets.USER_NAME}}
+            HOSTNAME: ${{ secrets.SSH_HOST }}
         run: |
-          echo "$PRIVATE_KEY" > private_key && chmod 400 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > my-ssh-key.pem
+          chmod 600 my-ssh-key.pem
+          ssh -o StrictHostKeyChecking=no -i my-ssh-key.pem frontend-ami@${HOSTNAME} '
               cd /home/ubuntu/ &&
               git clone https://github.com/Sahil1384/test-frontend.git &&
               cd /home/ubuntu/test-frontend &&
