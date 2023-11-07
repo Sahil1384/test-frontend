@@ -1,13 +1,13 @@
-name: Node.js CI/CD
+name: CICD for Laravel and React
 
 on:
   push:
     branches:
-      - main
+      - dev-env
 
 jobs:
-  build:
-
+  run-frontend-on-ec2:
+    name: Deploy Frontend
     runs-on: ubuntu-latest
 
     strategy:
@@ -15,30 +15,25 @@ jobs:
         node-version: [18.x]
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-    - name: Set up Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
 
-    - name: Install Dependencies
-      run: npm install
-
-    - name: Build Application
-      run: |
-        export CI=false
-        npm run build
-
-    - name: Deploy to EC2
-      run: |
-        # Use SCP or any deployment method to copy your application files to your EC2 instance.
-        # Restart your Node.js application using PM2 or another process manager.
-        # Example commands:
-        scp -i /path/to/your/key.pem -r ./dist ec2-user@your-ec2-ip:/path/to/destination
-        ssh -i /path/to/your/key.pem ec2-user@your-ec2-ip "cd /path/to/destination && pm2 restart app"
-
-    - name: Clean Up
-      run: npm ci
+      - name: SSH to instance
+        env:
+            PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+            HOSTNAME: ${{secrets.SSH_HOST}}
+            USER_NAME: ${{secrets.USER_NAME}}
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 400 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+              cd /home/ubuntu/ &&
+              git clone https://github.com/Sahil1384/test-frontend.git &&
+              cd /home/ubuntu/test-frontend &&
+              npm install &&
+              npm run build
+              '
