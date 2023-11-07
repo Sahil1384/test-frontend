@@ -39,4 +39,5 @@ jobs:
         ssh -i /path/to/your/key.pem ec2-user@your-ec2-ip "cd /path/to/destination && pm2 restart app"
 
     - name: Clean Up
+    
       run: npm ci
