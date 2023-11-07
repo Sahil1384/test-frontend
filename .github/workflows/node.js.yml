@@ -25,7 +25,7 @@ jobs:
         cache: 'npm'
 
     - name: Install Dependencies
-      working-directory: /home/ubuntu/test-frontend/Frontend
+      working-directory: /home/ubuntu/test-frontend
       run: npm install
 
     - name: Build Application
