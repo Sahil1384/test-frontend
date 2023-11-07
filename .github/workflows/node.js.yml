@@ -25,7 +25,6 @@ jobs:
         cache: 'npm'
 
     - name: Install Dependencies
-      working-directory: ./test-frontend
       run: npm install
 
     - name: Build Application
