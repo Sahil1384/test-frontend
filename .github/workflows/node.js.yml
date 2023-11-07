@@ -2,8 +2,7 @@ name: CICD for React
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   run-frontend-on-ec2:
