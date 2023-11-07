@@ -1,0 +1,43 @@
+name: Node.js CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install Dependencies
+      working-directory: /home/ubuntu/test-frontend/Frontend
+      run: npm install
+
+    - name: Build Application
+      run: npm run build
+
+    - name: Deploy to EC2
+      run: |
+        # Use SCP or any deployment method to copy your application files to your EC2 instance.
+        # Restart your Node.js application using PM2 or another process manager.
+        # Example commands:
+        scp -i /path/to/your/key.pem -r ./dist ec2-user@your-ec2-ip:/path/to/destination
+        ssh -i /path/to/your/key.pem ec2-user@your-ec2-ip "cd /path/to/destination && pm2 restart app"
+
+    - name: Clean Up
+      run: npm ci
