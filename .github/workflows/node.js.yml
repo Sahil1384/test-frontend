@@ -28,7 +28,7 @@ jobs:
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > my-ssh-key.pem
           chmod 600 my-ssh-key.pem
-          ssh -o StrictHostKeyChecking=no -i my-ssh-key.pem frontend-ami@${HOSTNAME} '
+          ssh -o StrictHostKeyChecking=no -i my-ssh-key.pem ubuntu@${HOSTNAME} '
               cd /home/ubuntu/ &&
               git clone https://github.com/Sahil1384/test-frontend.git &&
               cd /home/ubuntu/test-frontend &&
