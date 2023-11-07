@@ -10,30 +10,20 @@ jobs:
     name: Deploy Frontend
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [18.x]
-
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-
       - name: SSH to instance
         env:
             PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
             HOSTNAME: ${{secrets.SSH_HOST}}
-            USER_NAME: ${{secrets.USER_NAME}}
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 400 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+          ssh -o StrictHostKeyChecking=no -i private_key ${HOSTNAME} '
               cd /home/ubuntu/ &&
+              sudo rm -rf /home/ubuntu/Unnati/Frontend &&
               git clone https://github.com/Sahil1384/test-frontend.git &&
-              cd /home/ubuntu/test-frontend &&
+              cd /home/ubuntu/Unnati &&
+              git checkout dev-env &&
+              cd /home/ubuntu/Unnati/Frontend &&
               npm install &&
               npm run build
               '
