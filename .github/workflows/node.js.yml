@@ -33,7 +33,6 @@ jobs:
               rm -rf test-frontend &&
               git clone https://github.com/Sahil1384/test-frontend.git &&
               cd /home/ubuntu/test-frontend &&
-              npm cache clean -f &&
               npm install &&
               npm run build &&
               npm run start
