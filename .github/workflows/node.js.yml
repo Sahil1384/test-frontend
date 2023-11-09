@@ -1,4 +1,4 @@
-name: CICD for nodejs
+name: CICD for node js
 
 on:
   push:
